@@ -8,7 +8,7 @@ module lk.ijse.gdse72.shaan_fashion_layerd {
 
     opens lk.ijse.gdse72.shaan_fashion_layerd.controller to javafx.fxml;
     opens lk.ijse.gdse72.shaan_fashion_layerd to javafx.fxml;
-    opens lk.ijse.gdse72.shaan_fashion_layerd.dto.tm to javafx.base;
+    opens lk.ijse.gdse72.shaan_fashion_layerd.view.tdm to javafx.base;
 
     exports lk.ijse.gdse72.shaan_fashion_layerd.controller;
     exports lk.ijse.gdse72.shaan_fashion_layerd;

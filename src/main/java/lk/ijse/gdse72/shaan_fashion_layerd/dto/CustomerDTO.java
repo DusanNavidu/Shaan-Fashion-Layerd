@@ -1,4 +1,4 @@
-package lk.ijse.gdse72.shaan_fashion_layerd.model;
+package lk.ijse.gdse72.shaan_fashion_layerd.dto;
 
 import lombok.*;
 

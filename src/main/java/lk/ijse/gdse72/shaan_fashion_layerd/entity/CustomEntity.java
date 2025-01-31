@@ -9,10 +9,16 @@ import lombok.*;
 @ToString
 
 public class CustomEntity {
+
     //Customer
     private String customerId;
     private String userId;
     private String customerName;
     private String customerAddress;
     private String customerEmail;
+
+    //Category
+    private String categoryId;
+    private String categoryName;
+    private String categoryDescription;
 }

@@ -1,4 +1,4 @@
-package lk.ijse.gdse72.shaan_fashion_layerd.dto.tm;
+package lk.ijse.gdse72.shaan_fashion_layerd.view.tdm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

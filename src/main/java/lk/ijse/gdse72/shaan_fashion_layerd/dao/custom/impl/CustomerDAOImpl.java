@@ -2,7 +2,7 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl;
 
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.CustomerDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
-import lk.ijse.gdse72.shaan_fashion_layerd.model.CustomerDTO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.SQLUtil;
 
 import java.sql.ResultSet;
@@ -41,32 +41,35 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         return allCustomers;
     }
+
     @Override
-    public boolean save(CustomerDTO customerDTO) throws SQLException {
-        return SQLUtil.execute(
-                "insert into customer values (?,?,?,?,?)",
-                customerDTO.getCustomerId(),
-                customerDTO.getUserId(),
-                customerDTO.getCustomerName(),
-                customerDTO.getCustomerAddress(),
-                customerDTO.getCustomerEmail()
-        );
-    }
-    @Override
-    public boolean update(CustomerDTO customerDTO) throws SQLException {
+    public boolean save(Customer entity) throws SQLException {
         String sql = "UPDATE Customer SET userId = ?, customerName = ?, customerAddress = ?, customerEmail = ? WHERE customerId = ?";
         return SQLUtil.execute(sql,
-                customerDTO.getUserId(),
-                customerDTO.getCustomerName(),
-                customerDTO.getCustomerAddress(),
-                customerDTO.getCustomerEmail(),
-                customerDTO.getCustomerId()
+                entity.getUserId(),
+                entity.getCustomerName(),
+                entity.getCustomerAddress(),
+                entity.getCustomerEmail(),
+                entity.getCustomerId()
+        );    }
+
+    @Override
+    public boolean update(Customer entity) throws SQLException {
+        return SQLUtil.execute(
+                "insert into customer values (?,?,?,?,?)",
+                entity.getCustomerId(),
+                entity.getUserId(),
+                entity.getCustomerName(),
+                entity.getCustomerAddress(),
+                entity.getCustomerEmail()
         );
     }
+
     @Override
     public boolean delete(String customerId) throws SQLException {
         return SQLUtil.execute("delete from customer where customerId=?", customerId);
     }
+
     @Override
     public ArrayList<String> getAllCustomerIds() throws SQLException {
         ResultSet rst = SQLUtil.execute("select customerId from customer");

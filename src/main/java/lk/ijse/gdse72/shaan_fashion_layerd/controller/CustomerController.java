@@ -11,9 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
-import lk.ijse.gdse72.shaan_fashion_layerd.model.CustomerDTO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CustomerDAOImpl;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.tm.CustomerTM;
+import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CustomerTM;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -78,7 +78,7 @@ public class CustomerController implements Initializable {
     @FXML
     private JFXTextField txtCustomerName;
 
-    CustomerDAOImpl customerModel = new CustomerDAOImpl();
+    CustomerDAOImpl customerDAO = new CustomerDAOImpl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +98,7 @@ public class CustomerController implements Initializable {
     private void refreshPage() throws SQLException {
         refreshTable();
 
-        String nextCustomerID = customerModel.generateNewID();
+        String nextCustomerID = customerDAO.generateNewID();
         lblCustomerId.setText(nextCustomerID);
 
         lblUserId.setText("U001");
@@ -115,7 +115,7 @@ public class CustomerController implements Initializable {
     }
 
     private void refreshTable() throws SQLException {
-        ArrayList<Customer> customers = customerModel.getAll();
+        ArrayList<Customer> customers = customerDAO.getAll();
         ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
 
         for (Customer customer  : customers) {
@@ -187,9 +187,9 @@ public class CustomerController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidEmail) {
-            CustomerDTO customerDTO = new CustomerDTO(customerId, userId, customerName, customerAddress, customerEmail);
+            Customer customer = new Customer(customerId, userId, customerName, customerAddress, customerEmail);
 
-            boolean isSaved = customerModel.save(customerDTO);
+            boolean isSaved = customerDAO.save(customer);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "customer save...!").show();
@@ -239,9 +239,9 @@ public class CustomerController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidEmail) {
-            CustomerDTO customerDTO = new CustomerDTO(customerId, userId, customerName, customerAddress, customerEmail);
+            Customer customer = new Customer(customerId, userId, customerName, customerAddress, customerEmail);
 
-            boolean isUpdated = customerModel.update(customerDTO);
+            boolean isUpdated = customerDAO.update(customer);
 
             if (isUpdated) {
                 lblNotify.setText("Customer updated successfully!");
@@ -260,7 +260,7 @@ public class CustomerController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = customerModel.delete(customerId);
+            boolean isDeleted = customerDAO.delete(customerId);
 
             if (isDeleted) {
                 lblNotify.setText("Customer deleted successfully!");
