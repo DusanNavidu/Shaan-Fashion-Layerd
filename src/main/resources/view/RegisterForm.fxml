@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="OwnerRegisterPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.shaan_fashion_layerd.controller.RegisterController">
+   <children>
+      <Pane layoutX="1180.0" layoutY="102.0" prefHeight="1080.0" prefWidth="700.0" style="-fx-background-color: #050A30;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane layoutX="52.0" layoutY="168.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: rgb(255, 255, 255,0.8); -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;">
+               <children>
+                  <Label layoutX="188.0" layoutY="20.0" text="Sign up account" textFill="#234d10">
+                     <font>
+                        <Font name="Bodoni MT Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="188.0" layoutY="740.0" text="Do you have exiting account?">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="fxBtnSignin" layoutX="364.0" layoutY="735.0" onAction="#fxBtnSigninOnAction" text="Sign in?" textFill="#1504ab">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXTextField fx:id="txtFullName" labelFloat="true" layoutX="125.0" layoutY="200.0" prefHeight="35.0" prefWidth="350.0" promptText="Full name">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtUserName" labelFloat="true" layoutX="125.0" layoutY="300.0" prefHeight="35.0" prefWidth="350.0" promptText="Username">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="125.0" layoutY="400.0" prefHeight="35.0" prefWidth="350.0" promptText="E-mail">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXPasswordField fx:id="txtEnterPassword" labelFloat="true" layoutX="125.0" layoutY="500.0" prefHeight="35.0" prefWidth="350.0" promptText="Enter Password">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXPasswordField>
+                  <JFXPasswordField fx:id="txtConfirmPassword" labelFloat="true" layoutX="125.0" layoutY="600.0" prefHeight="35.0" prefWidth="350.0" promptText="Confirm Password">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXPasswordField>
+                  <JFXButton fx:id="btnSignup" buttonType="RAISED" layoutX="181.0" layoutY="700.0" onAction="#btnSignupOnAction" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: #86D293;" text="Sign up">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="200.0">
+                     <image>
+                        <Image url="@../icon/user_1077114.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="300.0">
+                     <image>
+                        <Image url="@../icon/user_1077114.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="400.0">
+                     <image>
+                        <Image url="@../icon/email_2669570.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="500.0">
+                     <image>
+                        <Image url="@../icon/password_14562503.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="76.0" layoutY="600.0">
+                     <image>
+                        <Image url="@../icon/password_14562503.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lblUserId" layoutX="125.0" layoutY="110.0" prefHeight="40.0" prefWidth="188.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="76.0" layoutY="110.0">
+                     <image>
+                        <Image url="@../icon/id-card_7552941.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="7.0" layoutY="7.0" onMouseClicked="#navigateLogin">
+                     <image>
+                        <Image url="@../icon/left-arrow_10023601.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <ImageView fitHeight="1080.0" fitWidth="1220.0" layoutX="930.0" layoutY="378.0" AnchorPane.leftAnchor="-5.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../images/Untitled%20Project(2).jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

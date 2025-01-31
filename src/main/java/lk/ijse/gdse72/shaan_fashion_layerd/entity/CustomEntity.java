@@ -1,4 +1,4 @@
-package lk.ijse.gdse72.shaanfashion.dto;
+package lk.ijse.gdse72.shaan_fashion_layerd.entity;
 
 import lombok.*;
 
@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 
-public class CustomerDTO {
+public class CustomEntity {
+    //Customer
     private String customerId;
     private String userId;
     private String customerName;

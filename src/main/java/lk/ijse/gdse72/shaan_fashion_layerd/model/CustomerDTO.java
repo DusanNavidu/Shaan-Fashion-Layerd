@@ -1,16 +1,14 @@
-package lk.ijse.gdse72.shaan_fashion_layerd.dto.tm;
+package lk.ijse.gdse72.shaan_fashion_layerd.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 
-public class CustomerTM {
+public class CustomerDTO {
     private String customerId;
     private String userId;
     private String customerName;
