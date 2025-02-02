@@ -38,7 +38,7 @@
       </Pane>
       <ImageView fitHeight="1080.0" fitWidth="1220.0" layoutX="116.0" layoutY="-20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-5.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@../images/Untitled%20Project(2).jpg" />
+            <Image url="@../assests/images/Untitled%20Project(2).jpg" />
          </image>
       </ImageView>
    </children>

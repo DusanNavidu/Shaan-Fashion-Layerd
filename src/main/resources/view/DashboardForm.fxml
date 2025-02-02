@@ -74,7 +74,7 @@
                <graphic>
                   <ImageView fitHeight="70.0" fitWidth="70.0">
                      <image>
-                        <Image url="@../icon/calculator_6572782.png" />
+                        <Image url="@../assests/icon/calculator_6572782.png" />
                      </image>
                   </ImageView>
                </graphic>

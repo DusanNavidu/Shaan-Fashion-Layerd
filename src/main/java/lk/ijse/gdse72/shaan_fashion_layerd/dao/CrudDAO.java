@@ -1,7 +1,5 @@
 package lk.ijse.gdse72.shaan_fashion_layerd.dao;
 
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.BrandDTO;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 

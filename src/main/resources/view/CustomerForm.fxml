@@ -174,7 +174,7 @@
       <Label fx:id="c" layoutX="32.0" layoutY="464.0" prefHeight="33.0" prefWidth="280.0" />
       <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="530.0" layoutY="20.0">
          <image>
-            <Image url="@../icon/add.gif" />
+            <Image url="@../assests/icon/add.gif" />
          </image>
       </ImageView>
    </children>

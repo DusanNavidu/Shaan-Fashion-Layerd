@@ -17,7 +17,7 @@ public class AppInitializer extends Application {
         stage.setTitle("Shaan Fashion");
         stage.getIcons().add(
                 new Image(
-                        getClass().getResourceAsStream("/icon/shopping_15406862.png"))
+                        getClass().getResourceAsStream("/assests/icon/shopping_15406862.png"))
         );
         stage.setScene(scene);
         stage.show();
