@@ -95,18 +95,4 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
         return categoryIds;
     }
-
-    @Override
-    public CategoryDTO findById(String selectedCatId) throws SQLException {
-        ResultSet rst = SQLUtil.execute("select * from category where categoryId=?", selectedCatId);
-
-        if (rst.next()) {
-            return new CategoryDTO(
-                    rst.getString(1),
-                    rst.getString(2),
-                    rst.getString(3)
-            );
-        }
-        return null;
-    }
 }

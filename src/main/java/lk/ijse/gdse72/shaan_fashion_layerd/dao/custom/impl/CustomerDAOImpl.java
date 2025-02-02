@@ -70,6 +70,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         return SQLUtil.execute("delete from customer where customerId=?", customerId);
     }
 
+
     @Override
     public ArrayList<String> getAllCustomerIds() throws SQLException {
         ResultSet rst = SQLUtil.execute("select customerId from customer");

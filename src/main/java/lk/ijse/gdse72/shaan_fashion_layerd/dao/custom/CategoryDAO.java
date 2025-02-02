@@ -12,6 +12,4 @@ public interface CategoryDAO extends CrudDAO<Category> {
     String getCategoryNameById(String categoryId) throws SQLException;
 
     ArrayList<String> getAllCategoryIds() throws SQLException;
-
-    CategoryDTO findById(String selectedCatId) throws SQLException;
 }
