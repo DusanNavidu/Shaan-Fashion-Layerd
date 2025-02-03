@@ -10,10 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.CustomerBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CustomerDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CustomerTM;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -78,7 +79,8 @@ public class CustomerController implements Initializable {
     @FXML
     private JFXTextField txtCustomerName;
 
-    CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+//    CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +100,7 @@ public class CustomerController implements Initializable {
     private void refreshPage() throws SQLException {
         refreshTable();
 
-        String nextCustomerID = customerDAO.generateNewID();
+        String nextCustomerID = customerBO.generateNewCustomerId();
         lblCustomerId.setText(nextCustomerID);
 
         lblUserId.setText("U001");
@@ -114,21 +116,25 @@ public class CustomerController implements Initializable {
         btnEMailSendToCustomer.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Customer> customers = customerDAO.getAll();
-        ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
+    private void refreshTable() {
+        tblCustomer.getItems().clear();
+        try {
+            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
+            ObservableList<CustomerTM> customers = FXCollections.observableArrayList();
 
-        for (Customer customer  : customers) {
-            CustomerTM customerTM = new CustomerTM(
-                    customer.getCustomerId(),
-                    customer.getUserId(),
-                    customer.getCustomerName(),
-                    customer.getCustomerAddress(),
-                    customer.getCustomerEmail()
-            );
-            customerTMS.add(customerTM);
+            for (CustomerDTO c : allCustomers) {
+                customers.add(new CustomerTM(
+                        c.getCustomerId(),
+                        c.getUserId(),
+                        c.getCustomerName(),
+                        c.getCustomerAddress(),
+                        c.getCustomerEmail()));
+            }
+
+            tblCustomer.setItems(customers);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        tblCustomer.setItems(customerTMS);
     }
 
     @FXML
@@ -187,9 +193,15 @@ public class CustomerController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidEmail) {
-            Customer customer = new Customer(customerId, userId, customerName, customerAddress, customerEmail);
 
-            boolean isSaved = customerDAO.save(customer);
+            boolean isSaved = customerBO.saveCustomer(
+                    new CustomerDTO(
+                            customerId,
+                            userId,
+                            customerName,
+                            customerAddress,
+                            customerEmail
+                    ));
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "customer save...!").show();
@@ -239,9 +251,16 @@ public class CustomerController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidEmail) {
-            Customer customer = new Customer(customerId, userId, customerName, customerAddress, customerEmail);
 
-            boolean isUpdated = customerDAO.update(customer);
+            boolean isUpdated = customerBO.updateCustomer(
+                    new CustomerDTO(
+                            customerId,
+                            userId,
+                            customerName,
+                            customerAddress,
+                            customerEmail
+                    )
+            );
 
             if (isUpdated) {
                 lblNotify.setText("Customer updated successfully!");
@@ -260,7 +279,7 @@ public class CustomerController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = customerDAO.delete(customerId);
+            boolean isDeleted = customerBO.deleteCustomer(customerId);
 
             if (isDeleted) {
                 lblNotify.setText("Customer deleted successfully!");

@@ -2,6 +2,7 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 
-public class OrderDTO {
+public class OrderDTO implements Serializable {
     private String orderId;
     private String customerId;
     private Date orderDate;

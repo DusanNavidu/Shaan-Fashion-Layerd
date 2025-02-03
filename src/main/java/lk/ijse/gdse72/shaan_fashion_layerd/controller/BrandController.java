@@ -10,7 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.BrandBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.BrandDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.BrandDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Brand;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.BrandTM;
 
@@ -61,8 +64,7 @@ public class BrandController implements Initializable {
     @FXML
     private JFXTextField txtDescription;
 
-    BrandDAOImpl brandDAO = new BrandDAOImpl();
-
+    BrandBO brandBO = (BrandBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BRAND);
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colBrandId.setCellValueFactory(new PropertyValueFactory<>("brandId"));
@@ -79,7 +81,7 @@ public class BrandController implements Initializable {
     private void refreshPage() throws SQLException {
         refreshTable();
 
-        String nextCustomerID = brandDAO.generateNewID();
+        String nextCustomerID = brandBO.generateNewBrandId();
         lblBrandId.setText(nextCustomerID);
 
         txtBrandName.setText("");
@@ -93,19 +95,19 @@ public class BrandController implements Initializable {
     }
 
     private void refreshTable() throws SQLException {
-        ArrayList<Brand> brands = brandDAO.getAll();
-        ObservableList<BrandTM> brandTMS = FXCollections.observableArrayList();
-
-
-        for (Brand brand : brands) {
-            BrandTM brandTM = new BrandTM(
-                    brand.getBrandId(),
-                    brand.getBrandName(),
-                    brand.getDescription()
-            );
-            brandTMS.add(brandTM);
+        tblBrand.getItems().clear();
+        try {
+            ArrayList<BrandDTO> allBrands = brandBO.getAllBrands();
+            for (BrandDTO b : allBrands) {
+                tblBrand.getItems().add(new BrandTM(
+                        b.getBrandId(),
+                        b.getBrandName(),
+                        b.getDescription()
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        tblBrand.setItems(brandTMS);
     }
 
     @FXML
@@ -121,7 +123,7 @@ public class BrandController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = brandDAO.delete(brandId);
+            boolean isDeleted = brandBO.deleteBrand(brandId);
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "brand delete...!").show();
@@ -162,9 +164,13 @@ public class BrandController implements Initializable {
 
         // Save customer if all fields are valid
         if (isValidName) {
-            Brand brand = new Brand(brandId, brandName, description);
 
-            boolean isSaved = brandDAO.save(brand);
+            boolean isSaved = brandBO.saveBrand(
+                    new BrandDTO(
+                            brandId,
+                            brandName,
+                            description
+                    ));
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Brand save...!").show();
@@ -203,9 +209,13 @@ public class BrandController implements Initializable {
 
         // update customer if all fields are valid
         if (isValidName) {
-            Brand brand = new Brand(brandId, brandName, description);
 
-            boolean isUpdate = brandDAO.update(brand);
+            boolean isUpdate = brandBO.updateBrand(
+                    new BrandDTO(
+                            brandId,
+                            brandName,
+                            description
+                    ));
 
             if (isUpdate) {
                 new Alert(Alert.AlertType.INFORMATION, "Brand update...!").show();

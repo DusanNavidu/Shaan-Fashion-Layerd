@@ -7,6 +7,5 @@ import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface OrderDeatailsDAO extends CrudDAO<OrderDetails> {
-    boolean saveOrderDetailsList(ArrayList<OrderDetailsDTO> orderDetailsDTOS) throws SQLException;
+public interface OrderDetailsDAO extends CrudDAO<OrderDetails> {
 }

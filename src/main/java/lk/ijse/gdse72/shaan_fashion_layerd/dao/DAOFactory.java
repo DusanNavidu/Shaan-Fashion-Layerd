@@ -1,8 +1,6 @@
 package lk.ijse.gdse72.shaan_fashion_layerd.dao;
 
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.BrandDAOImpl;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CategoryDAOImpl;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CustomerDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.*;
 
 public class DAOFactory {
     private static DAOFactory daoFactory;
@@ -15,7 +13,7 @@ public class DAOFactory {
     }
 
     public enum DAOTypes {
-        CUSTOMER,CATEGORY,BRAND
+        CUSTOMER,CATEGORY,BRAND,ITEM,ORDER,ORDERDETAILS,SUPPLIER
     }
 
     public SuperDAO getDAO(DAOTypes daoTypes){
@@ -26,6 +24,14 @@ public class DAOFactory {
                 return new CategoryDAOImpl();
             case BRAND:
                 return new BrandDAOImpl();
+            case ITEM:
+                return new ItemDAOImpl();
+            case ORDER:
+                return new OrderDAOImpl();
+            case SUPPLIER:
+                return new SupplierDAOImpl();
+            case ORDERDETAILS:
+                return new OrderDetailsDAOImpl();
             default:
                 return null;
         }

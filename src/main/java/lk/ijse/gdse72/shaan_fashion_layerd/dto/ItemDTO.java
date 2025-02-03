@@ -2,6 +2,7 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString
 
-public class ItemDTO {
+public class ItemDTO implements Serializable {
     private String itemId;
     private String itemName;
     private String categoryId;

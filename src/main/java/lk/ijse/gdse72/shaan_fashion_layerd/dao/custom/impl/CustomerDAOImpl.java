@@ -43,7 +43,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean save(Customer entity) throws SQLException {
+    public boolean update(Customer entity) throws SQLException {
         String sql = "UPDATE Customer SET userId = ?, customerName = ?, customerAddress = ?, customerEmail = ? WHERE customerId = ?";
         return SQLUtil.execute(sql,
                 entity.getUserId(),
@@ -51,10 +51,11 @@ public class CustomerDAOImpl implements CustomerDAO {
                 entity.getCustomerAddress(),
                 entity.getCustomerEmail(),
                 entity.getCustomerId()
-        );    }
+        );
+    }
 
     @Override
-    public boolean update(Customer entity) throws SQLException {
+    public boolean save(Customer entity) throws SQLException {
         return SQLUtil.execute(
                 "insert into customer values (?,?,?,?,?)",
                 entity.getCustomerId(),

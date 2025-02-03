@@ -10,7 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.CategoryBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CategoryDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.CategoryDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Category;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CategoryTM;
 
@@ -61,7 +64,7 @@ public class CategoryController implements Initializable {
     @FXML
     private JFXTextField txtDescription;
 
-    CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+    CategoryBO categoryBO = (CategoryBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CATEGORY);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,7 +82,7 @@ public class CategoryController implements Initializable {
     private void refreshPage() throws SQLException {
         refreshTable();
 
-        String nextCategoryId = categoryDAO.generateNewID();
+        String nextCategoryId = categoryBO.generateNewCategoryId();
         lblCategoryId.setText(nextCategoryId);
 
         txtCategoryName.setText("");
@@ -87,18 +90,24 @@ public class CategoryController implements Initializable {
     }
 
     private void refreshTable() throws SQLException {
-        ArrayList<Category> categoryS = categoryDAO.getAll();
-        ObservableList<CategoryTM> categoryTMS = FXCollections.observableArrayList();
+        tbtCategory.getItems().clear();
+        try {
+            ArrayList<CategoryDTO> allCategory = categoryBO.getAllCategoryS();
+            ObservableList<CategoryTM> categoryTMS = FXCollections.observableArrayList();
 
-        for (Category category : categoryS) {
-            CategoryTM customerTM = new CategoryTM(
-                    category.getCategoryId(),
-                    category.getCategoryName(),
-                    category.getDescription()
-            );
-            categoryTMS.add(customerTM);
+            for (CategoryDTO ca : allCategory) {
+                categoryTMS.add(new CategoryTM(
+                        ca.getCategoryId(),
+                        ca.getCategoryName(),
+                        ca.getDescription()
+                ));
+            }
+            tbtCategory.setItems(categoryTMS);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        tbtCategory.setItems(categoryTMS);
     }
 
     @FXML
@@ -114,7 +123,7 @@ public class CategoryController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = categoryDAO.delete(categoryId);
+            boolean isDeleted = categoryBO.deleteCategory(categoryId);
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Category delete...!").show();
@@ -154,9 +163,13 @@ public class CategoryController implements Initializable {
         }
 
         if (isValidName ) {
-            Category category = new Category(categoryId , categoryName , description);
 
-            boolean isSaved = categoryDAO.save(category);
+            boolean isSaved = categoryBO.saveCategory(
+                    new CategoryDTO(
+                            categoryId,
+                            categoryName,
+                            description
+                    ));
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Category saved...!").show();
@@ -195,9 +208,12 @@ public class CategoryController implements Initializable {
 
         if (isValidName) {
 
-            Category category = new Category(categoryId, categoryName, description);
-
-            boolean isUpdate = categoryDAO.update(category);
+            boolean isUpdate = categoryBO.updateCategory(
+                    new CategoryDTO(
+                            categoryId,
+                            categoryName,
+                            description
+                    ));
 
             if (isUpdate) {
                 new Alert(Alert.AlertType.INFORMATION, "Category update...!").show();

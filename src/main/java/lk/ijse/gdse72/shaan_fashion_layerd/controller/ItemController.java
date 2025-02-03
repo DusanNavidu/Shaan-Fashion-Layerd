@@ -10,9 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.ItemBO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.ItemDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.BrandDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CategoryDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.ItemDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.ItemDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.ItemTM;
 
@@ -111,7 +115,7 @@ public class ItemController implements Initializable {
     private final CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
     private final BrandDAOImpl brandDAO = new BrandDAOImpl();
 
-    ItemDAOImpl itemDAO = new ItemDAOImpl();
+    ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ITEM);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -126,7 +130,7 @@ public class ItemController implements Initializable {
         colProfit.setCellValueFactory(new PropertyValueFactory<>("profit"));
         try {
             refreshPage();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -155,10 +159,10 @@ public class ItemController implements Initializable {
         });
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
 
-        String nextItemID = itemDAO.generateNewID();
+        String nextItemID = itemBO.generateNewItemId();
         lblItemId.setText(nextItemID);
 
         txtItemName.setText("");
@@ -171,7 +175,7 @@ public class ItemController implements Initializable {
 
         txtItemQuantity.setText("");
 
-        String nextBatchNumber = itemDAO.getNexBatchNumber();
+        String nextBatchNumber = itemBO.generateNewBatchNumber();
         lblBatchNumber.setText(nextBatchNumber);
 
         txtDescription.setText("");
@@ -199,37 +203,39 @@ public class ItemController implements Initializable {
     }
 
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Item> items = itemDAO.getAll();
-        ObservableList<ItemTM> itemTMS = FXCollections.observableArrayList();
-
-        for (Item item : items) {
-            ItemTM itemTM = new ItemTM(
-                    item.getItemId(),
-                    item.getItemName(),
-                    item.getCategoryId(),
-                    item.getBrandId(),
-                    item.getItemQuantityOnHand(),
-                    item.getBatchNumber(),
-                    item.getDescription(),
-                    item.getPrice(),
-                    item.getProfit()
-            );
-            itemTMS.add(itemTM);
+    private void refreshTable() {
+        tblItem.getItems().clear();
+        try {
+            ArrayList<ItemDTO> allItems = itemBO.getAllItems();
+            for (ItemDTO i : allItems) {
+                tblItem.getItems().add(new ItemTM(
+                        i.getItemId(),
+                        i.getItemName(),
+                        i.getCategoryId(),
+                        i.getBrandId(),
+                        i.getItemQuantityOnHand(),
+                        i.getBatchNumber(),
+                        i.getDescription(),
+                        i.getPrice(),
+                        i.getProfit()
+                ));
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-        tblItem.setItems(itemTMS);
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) throws SQLException {
+    void btnDeleteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String customerId = lblItemId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this Item?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = itemDAO.delete(customerId);
+            boolean isDeleted = itemBO.deleteItem(customerId);
 
             if (isDeleted) {
                 lblNotify.setText("Item deleted successfully!");
@@ -247,7 +253,7 @@ public class ItemController implements Initializable {
     }
 
     @FXML
-    void btnResertOnAction(ActionEvent event) throws SQLException {
+    void btnResertOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -303,7 +309,18 @@ public class ItemController implements Initializable {
             Item item = new Item(itemId, itemName, categoryId, brandId, itemQuantityOnHand, batchNumber, description, price, profit);
 
             try {
-                boolean isSaved = itemDAO.save(item);
+                boolean isSaved = itemBO.saveItem(
+                        new ItemDTO(
+                                itemId,
+                                itemName,
+                                categoryId,
+                                brandId,
+                                itemQuantityOnHand,
+                                batchNumber,
+                                description,
+                                price,
+                                profit
+                        ));
 
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION, "Item saved successfully!").show();
@@ -314,6 +331,8 @@ public class ItemController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Failed to save item due to an SQL error!").show();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -358,10 +377,19 @@ public class ItemController implements Initializable {
             double price = Double.parseDouble(priceStr);
             BigDecimal profit = new BigDecimal(profitStr);
 
-            Item item = new Item(itemId, itemName, categoryId, brandId, itemQuantityOnHand, batchNumber, description, price, profit);
-
             try {
-                boolean isUpdated = itemDAO.update(item);
+                boolean isUpdated = itemBO.updateItem(
+                        new ItemDTO(
+                                itemId,
+                                itemName,
+                                categoryId,
+                                brandId,
+                                itemQuantityOnHand,
+                                batchNumber,
+                                description,
+                                price,
+                                profit
+                        ));
 
                 if (isUpdated) {
                     new Alert(Alert.AlertType.INFORMATION, "Item updated successfully!").show();
@@ -377,6 +405,8 @@ public class ItemController implements Initializable {
 
                 new Alert(Alert.AlertType.ERROR, "Failed to update item due to an SQL error!").show();
                 btnUpdate.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }

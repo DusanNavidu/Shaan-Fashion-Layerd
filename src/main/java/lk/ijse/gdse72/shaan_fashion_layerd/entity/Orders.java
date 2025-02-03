@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 
-public class Order {
+public class Orders {
     private String orderId;
     private String customerId;
     private Date orderDate;

@@ -14,9 +14,7 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.OrderDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.ItemDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
-import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
-import lk.ijse.gdse72.shaan_fashion_layerd.entity.Order;
-import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.Orders;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CartTM;
 
 
@@ -245,7 +243,7 @@ public class OrderController implements Initializable {
             orderDetailsDTOS.add(orderDetailsDTO);
         }
 
-        Order orderDTO = new Order(
+        Orders orderDTO = new Orders(
                 orderId,
                 customerId,
                 dateOfOrder,

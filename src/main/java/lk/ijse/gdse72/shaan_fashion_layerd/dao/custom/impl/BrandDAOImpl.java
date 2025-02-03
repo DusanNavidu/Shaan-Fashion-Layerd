@@ -71,9 +71,9 @@ public class BrandDAOImpl implements BrandDAO {
     public boolean update(Brand entity) throws SQLException {
         return SQLUtil.execute(
                 "update brand set brandName=?, description=? where brandId=?",
-                entity.getDescription(),  // Description
-                entity.getBrandId(),  // Brand ID
-                entity.getBrandName()   // Brand Name
+                entity.getBrandName(),
+                entity.getDescription(),
+                entity.getBrandId()
         );
     }
     @Override

@@ -10,7 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.SupplierBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.SupplierDAOImpl;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.SupplierDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Supplier;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.SupplierTM;
 
@@ -73,7 +76,7 @@ public class SupplierController implements Initializable {
     @FXML
     private JFXTextField txtSupplyItem;
 
-    SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,7 +96,7 @@ public class SupplierController implements Initializable {
     private void refreshPage() throws SQLException {
         refreshTable();
 
-        String nextCustomerID = supplierDAO.generateNewID();
+        String nextCustomerID = supplierBO.generateNewSupplierId();
         lblSupplierId.setText(nextCustomerID);
 
         txtSupplierName.setText("");
@@ -109,20 +112,24 @@ public class SupplierController implements Initializable {
     }
 
     private void refreshTable() throws SQLException {
-        ArrayList<Supplier> suppliers = supplierDAO.getAll();
-        ObservableList<SupplierTM> supplierTMS = FXCollections.observableArrayList();
+        tblSupplier.getItems().clear();
+        try {
+            ArrayList<SupplierDTO> allSuppliers = supplierBO.getAllSuppliers();
+            ObservableList<SupplierTM> suppliers = FXCollections.observableArrayList();
 
-        for (Supplier supplier : suppliers) {
-            SupplierTM supplierTM = new SupplierTM(
-                    supplier.getSupplierId(),
-                    supplier.getSupplierName(),
-                    supplier.getSupplyItem(),
-                    supplier.getSupplierAddress(),
-                    supplier.getContactNo()
-            );
-            supplierTMS.add(supplierTM);
+            for (SupplierDTO s : allSuppliers) {
+                suppliers.add(new SupplierTM(
+                        s.getSupplierId(),
+                        s.getSupplierName(),
+                        s.getSupplyItem(),
+                        s.getSupplierAddress(),
+                        s.getContactNo()
+                ));
+            }
+            tblSupplier.setItems(suppliers);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        tblSupplier.setItems(supplierTMS);
     }
 
     @FXML
@@ -133,7 +140,7 @@ public class SupplierController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = supplierDAO.delete(customerId);
+            boolean isDeleted = supplierBO.deleteSupplier(customerId);
 
             if (isDeleted) {
                 lblNotify.setText("Customer deleted successfully!");
@@ -166,7 +173,6 @@ public class SupplierController implements Initializable {
         // Define regex patterns for validation
         String namePattern = "^[A-Za-z ]+$";
         String addressPattern = "^^[a-zA-Z0-9\\s,.'-]{3,}$";
-        //String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         String phonePattern = "^(\\d+)||((\\d+\\.)(\\d){2})$";
 
         boolean isValidName = supplierName.matches(namePattern);
@@ -193,9 +199,15 @@ public class SupplierController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidPhone) {
-            Supplier supplier = new Supplier(supplierId, supplierName, supplierItem, supplierAddress, supplierContactNo);
 
-            boolean isSaved = supplierDAO.save(supplier);
+            boolean isSaved = supplierBO.saveSupplier(
+                    new SupplierDTO(
+                            supplierId,
+                            supplierName,
+                            supplierItem,
+                            supplierAddress,
+                            supplierContactNo
+                    ));
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "supplier save...!").show();
@@ -246,9 +258,15 @@ public class SupplierController implements Initializable {
         }
 
         if (isValidName && isValidAddress && isValidPhone) {
-            Supplier supplier = new Supplier(supplierId, supplierName, supplierItem, supplierAddress, supplierContactNo);
 
-            boolean isUpdated = supplierDAO.update(supplier);
+            boolean isUpdated = supplierBO.updateSupplier(
+                    new SupplierDTO(
+                            supplierId,
+                            supplierName,
+                            supplierItem,
+                            supplierAddress,
+                            supplierContactNo
+                    ));
 
             if (isUpdated) {
                 new Alert(Alert.AlertType.INFORMATION, "supplier update...!").show();
