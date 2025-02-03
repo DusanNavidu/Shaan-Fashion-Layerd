@@ -15,7 +15,7 @@ public class Item {
     private String itemName;
     private String categoryId;
     private String brandId;
-    private String itemQuantityOnHand;
+    private int itemQuantityOnHand;
     private String batchNumber;
     private String description;
     private double price;

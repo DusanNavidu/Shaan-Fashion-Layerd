@@ -8,12 +8,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.CustomerBO;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.ItemBO;
+import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.PurchaseOrderBO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dao.DAOFactory;
+import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.CustomerDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CustomerDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.ItemDAOImpl;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.OrderDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.ItemDTO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Orders;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CartTM;
 
@@ -85,9 +93,8 @@ public class OrderController implements Initializable {
     @FXML
     private TableView<CartTM> tblCart;
 
-    private final OrderDAOImpl orderDAO = new OrderDAOImpl();
-    private final CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-    private final ItemDAOImpl itemDAO = new ItemDAOImpl();
+    PurchaseOrderBO purchaseOrderBO = (PurchaseOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PURCHASE_ORDER);
+
 
     private final ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
 
@@ -97,13 +104,13 @@ public class OrderController implements Initializable {
 
         try {
             refreshPage();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Fail to load data..!").show();
         }
     }
 
-    private void refreshPage() throws SQLException {
-        lblOrderId.setText(orderDAO.generateNewID());
+    private void refreshPage() throws Exception {
+        lblOrderId.setText(purchaseOrderBO.generateOrderID());
 
         orderDate.setText(LocalDate.now().toString());
 
@@ -123,15 +130,15 @@ public class OrderController implements Initializable {
         tblCart.refresh();
     }
 
-    private void loadItemId() throws SQLException {
-        ArrayList<String> itemIds = itemDAO.getAllItemIds();
+    private void loadItemId() throws Exception {
+        ArrayList<String> itemIds = purchaseOrderBO.getAllItemIds();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(itemIds);
         cmbItemId.setItems(observableList);
     }
 
-    private void loadCustomerIds() throws SQLException {
-        ArrayList<String> customerIds = customerDAO.getAllCustomerIds();
+    private void loadCustomerIds() throws Exception {
+        ArrayList<String> customerIds = purchaseOrderBO.getAllCustomerIds();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(customerIds);
         cmbCustomerId.setItems(observableList);
@@ -215,7 +222,7 @@ public class OrderController implements Initializable {
     }
 
     @FXML
-    void btnPayOnAction(ActionEvent event) throws SQLException {
+    void btnPayOnAction(ActionEvent event) throws Exception {
         if (tblCart.getItems().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please add items to cart..!").show();
             return;
@@ -243,14 +250,14 @@ public class OrderController implements Initializable {
             orderDetailsDTOS.add(orderDetailsDTO);
         }
 
-        Orders orderDTO = new Orders(
+        OrderDTO orderDTO = new OrderDTO(
                 orderId,
                 customerId,
                 dateOfOrder,
                 orderDetailsDTOS
         );
 
-        boolean isSaved = orderDAO.save(orderDTO);
+        boolean isSaved = purchaseOrderBO.saveOrder(orderDTO);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Order saved..!").show();
@@ -262,31 +269,31 @@ public class OrderController implements Initializable {
     }
 
     @FXML
-    void btnResetOnAction(ActionEvent event) throws SQLException {
+    void btnResetOnAction(ActionEvent event) throws Exception {
         refreshPage();
     }
 
     @FXML
     void cmbCustomerOnAction(ActionEvent event) throws SQLException {
         String selectedCustomerId = cmbCustomerId.getSelectionModel().getSelectedItem();
-        CustomerDTO customerDTO = customerDAO.findById(selectedCustomerId);
+        Customer customer = purchaseOrderBO.findByCustomerId(selectedCustomerId);
 
-        if (customerDTO != null) {
+        if (customer != null) {
 
-            lblCustomerName.setText(customerDTO.getCustomerName());
+            lblCustomerName.setText(customer.getCustomerName());
         }
     }
 
     @FXML
     void cmbItemOnAction(ActionEvent event) throws SQLException {
         String selectedItemId = cmbItemId.getSelectionModel().getSelectedItem();
-        ItemDTO itemDTO = itemDAO.findById(selectedItemId);
+        Item item = purchaseOrderBO.findByItemId(selectedItemId);
 
-        if (itemDTO != null) {
+        if (item != null) {
 
-            lblItemName.setText(itemDTO.getItemName());
-            lblItemQty.setText(String.valueOf(itemDTO.getItemQuantityOnHand()));
-            lblItemPrice.setText(String.valueOf(itemDTO.getPrice()));
+            lblItemName.setText(item.getItemName());
+            lblItemQty.setText(String.valueOf(item.getItemQuantityOnHand()));
+            lblItemPrice.setText(String.valueOf(item.getPrice()));
         }
     }
 }

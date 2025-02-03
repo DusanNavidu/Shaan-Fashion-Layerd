@@ -12,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.CustomerBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
-import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CustomerTM;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
 

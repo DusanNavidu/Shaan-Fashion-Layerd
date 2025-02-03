@@ -2,7 +2,6 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl;
 
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.CustomerDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.CustomerDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.SQLUtil;
 
 import java.sql.ResultSet;
@@ -85,11 +84,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         return customerIds;
     }
     @Override
-    public CustomerDTO findById(String selectedCusId) throws SQLException {
+    public Customer findById(String selectedCusId) throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from customer where customerId=?", selectedCusId);
 
         if (rst.next()) {
-            return new CustomerDTO(
+            return new Customer(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // User ID
                     rst.getString(3),  // Name

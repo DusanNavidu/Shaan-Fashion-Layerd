@@ -12,14 +12,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.ItemBO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.ItemDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.BrandDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.CategoryDAOImpl;
-import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl.ItemDAOImpl;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.ItemDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.ItemTM;
-
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -65,7 +62,7 @@ public class ItemController implements Initializable {
     private TableColumn<ItemTM , String> colItemName;
 
     @FXML
-    private TableColumn<ItemTM , String> colItemQuantity;
+    private TableColumn<ItemTM , Integer> colItemQuantity;
 
     @FXML
     private TableColumn<ItemTM , BigDecimal> colPrice;
@@ -202,7 +199,6 @@ public class ItemController implements Initializable {
         comBrandId.setItems(observableList);
     }
 
-
     private void refreshTable() {
         tblItem.getItems().clear();
         try {
@@ -269,7 +265,7 @@ public class ItemController implements Initializable {
         String itemName = txtItemName.getText();
         String categoryId = comCategoryId.getSelectionModel().getSelectedItem();
         String brandId = comBrandId.getSelectionModel().getSelectedItem();
-        String itemQuantityOnHand = txtItemQuantity.getText();
+        String itemQuantityOnHandStr = txtItemQuantity.getText();
         String batchNumber = lblBatchNumber.getText();
         String description = txtDescription.getText();
         String priceStr = txtPeice.getText();
@@ -280,10 +276,10 @@ public class ItemController implements Initializable {
         String namePattern = "^[A-Za-z ]+$";
 
         boolean isValidName = itemName != null && itemName.matches(namePattern);
-        boolean isValidQuantity = itemQuantityOnHand.matches(quantityPattern);
+        boolean isValidQuantity = itemQuantityOnHandStr.matches(quantityPattern);
         boolean isValidPrice = priceStr.matches(pricePattern);
 
-        System.out.println(isValidQuantity + " / " + itemQuantityOnHand);
+        System.out.println(isValidQuantity + " / " + itemQuantityOnHandStr);
 
         resetStyles();
 
@@ -302,7 +298,7 @@ public class ItemController implements Initializable {
         if (isValidName && isValidQuantity && isValidPrice) {
             resetStyles();
 
-            int quantity = Integer.parseInt(itemQuantityOnHand);
+            int itemQuantityOnHand = Integer.parseInt(itemQuantityOnHandStr);
             double price = Double.parseDouble(priceStr);
             BigDecimal profit = new BigDecimal(profitStr);
 
@@ -336,13 +332,14 @@ public class ItemController implements Initializable {
             }
         }
     }
+
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         String itemId = lblItemId.getText();
         String itemName = txtItemName.getText();
         String categoryId = comCategoryId.getSelectionModel().getSelectedItem();
         String brandId = comBrandId.getSelectionModel().getSelectedItem();
-        String itemQuantityOnHand = txtItemQuantity.getText();
+        String itemQuantityOnHandStr = txtItemQuantity.getText();
         String batchNumber = lblBatchNumber.getText();
         String description = txtDescription.getText();
         String priceStr = txtPeice.getText();
@@ -353,7 +350,7 @@ public class ItemController implements Initializable {
         String namePattern = "^[A-Za-z ]+$";
 
         boolean isValidName = itemName != null && itemName.matches(namePattern);
-        boolean isValidQuantity = itemQuantityOnHand.matches(quantityPattern);
+        boolean isValidQuantity = itemQuantityOnHandStr.matches(quantityPattern);
         boolean isValidPrice = priceStr.matches(pricePattern);
 
         resetStyles();
@@ -373,7 +370,7 @@ public class ItemController implements Initializable {
         if (isValidName && isValidQuantity && isValidPrice) {
             resetStyles();
 
-            int quantity = Integer.parseInt(itemQuantityOnHand);
+            int itemQuantityOnHand = Integer.parseInt(itemQuantityOnHandStr);
             double price = Double.parseDouble(priceStr);
             BigDecimal profit = new BigDecimal(profitStr);
 

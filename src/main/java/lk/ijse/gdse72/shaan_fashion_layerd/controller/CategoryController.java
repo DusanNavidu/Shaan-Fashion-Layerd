@@ -87,6 +87,11 @@ public class CategoryController implements Initializable {
 
         txtCategoryName.setText("");
         txtDescription.setText("");
+
+        btnSave.setDisable(false);
+
+        btnDelete.setDisable(true);
+        btnUpdate.setDisable(true);
     }
 
     private void refreshTable() throws SQLException {

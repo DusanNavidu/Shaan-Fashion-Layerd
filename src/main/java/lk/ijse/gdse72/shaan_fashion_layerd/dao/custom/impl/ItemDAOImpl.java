@@ -2,7 +2,6 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl;
 
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.SQLUtil;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.ItemDAO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.ItemDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
 
@@ -52,7 +51,7 @@ public class ItemDAOImpl implements ItemDAO {
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4),
-                    rst.getString(5),
+                    rst.getInt(5),
                     rst.getString(6),
                     rst.getString(7),
                     rst.getDouble(8),
@@ -90,16 +89,16 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public ItemDTO findById(String selectedItemId) throws SQLException {
+    public Item findById(String selectedItemId) throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from item where itemId=?", selectedItemId);
 
         if (rst.next()) {
-            return new ItemDTO(
+            return new Item(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
                     rst.getString(4),
-                    rst.getString(5),
+                    rst.getInt(5),
                     rst.getString(6),
                     rst.getString(7),
                     rst.getDouble(8),

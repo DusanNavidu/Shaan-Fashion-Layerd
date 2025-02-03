@@ -3,6 +3,7 @@ package lk.ijse.gdse72.shaan_fashion_layerd.db;
 import lombok.Getter;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -21,5 +22,9 @@ public class DBConnection {
 
     public static DBConnection getInstance() throws SQLException {
         return instance == null ? instance = new DBConnection() : instance;
+    }
+
+    public Connection getDbConnection() {
+        return connection;
     }
 }

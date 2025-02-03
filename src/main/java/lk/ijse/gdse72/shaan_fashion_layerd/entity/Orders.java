@@ -18,4 +18,10 @@ public class Orders {
     private Date orderDate;
 
     private ArrayList<OrderDetailsDTO> orderDetailsDTOS;
+
+    public Orders(String orderId, String customerId, Date orderDate) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.orderDate = orderDate;
+    }
 }
