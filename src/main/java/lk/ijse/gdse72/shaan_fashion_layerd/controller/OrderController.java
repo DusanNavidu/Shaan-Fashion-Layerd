@@ -95,7 +95,6 @@ public class OrderController implements Initializable {
 
     PurchaseOrderBO purchaseOrderBO = (PurchaseOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PURCHASE_ORDER);
 
-
     private final ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
 
     @Override

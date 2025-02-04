@@ -78,7 +78,6 @@ public class CustomerController implements Initializable {
     @FXML
     private JFXTextField txtCustomerName;
 
-//    CustomerDAOImpl customerDAO = new CustomerDAOImpl();
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @Override
@@ -127,7 +126,8 @@ public class CustomerController implements Initializable {
                         c.getUserId(),
                         c.getCustomerName(),
                         c.getCustomerAddress(),
-                        c.getCustomerEmail()));
+                        c.getCustomerEmail()
+                ));
             }
 
             tblCustomer.setItems(customers);
@@ -204,11 +204,9 @@ public class CustomerController implements Initializable {
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "customer save...!").show();
-                lblNotify.setText("customer successfully saved!");
                 refreshPage();
             } else {
                 new Alert(Alert.AlertType.ERROR, "Fail to save customer...!").show();
-                lblNotify.setText("Failed to save customer.");
             }
         }
     }
@@ -262,11 +260,10 @@ public class CustomerController implements Initializable {
             );
 
             if (isUpdated) {
-                lblNotify.setText("Customer updated successfully!");
+                new Alert(Alert.AlertType.INFORMATION, "Customer updated successfully!").show();
                 refreshTable(); // Refresh the table to show updated data
             } else {
-                lblNotify.setText("Customer update failed!");
-            }
+                new Alert(Alert.AlertType.ERROR, "Customer update failed!").show();}
         }
     }
 
@@ -281,11 +278,10 @@ public class CustomerController implements Initializable {
             boolean isDeleted = customerBO.deleteCustomer(customerId);
 
             if (isDeleted) {
-                lblNotify.setText("Customer deleted successfully!");
-                refreshTable(); // Refresh the table to show updated data
+                new Alert(Alert.AlertType.INFORMATION, "Customer deleted successfully!").show();
                 refreshPage();  // Refresh the entire page to clear fields
             } else {
-                lblNotify.setText("Customer delete failed!");
+                new Alert(Alert.AlertType.ERROR, "Customer delete failed!").show();
             }
         }
     }

@@ -8,6 +8,7 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.OrderDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.OrderDetailsDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.db.DBConnection;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
+import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
 
@@ -48,6 +49,22 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
     }
 
     @Override
+    public boolean saveOrderDetailsList(ArrayList<OrderDetailsDTO> orderDetailsDTOS) throws SQLException {
+        for (OrderDetailsDTO orderDetailsDTO : orderDetailsDTOS) {
+            boolean isOrderDetailsSaved = orderDetailsDAO.saveOrderDetail(orderDetailsDTO);
+            if (!isOrderDetailsSaved) {
+                return false;
+            }
+
+            boolean isItemUpdated = itemDAO.reduceQty(orderDetailsDTO);
+            if (!isItemUpdated) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public boolean saveOrder(OrderDTO orderDTO) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
         try {
@@ -55,7 +72,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
             boolean isOrderSaved = orderDAO.save(orderDTO);
             if (isOrderSaved) {
-                boolean isOrderDetailListSaved = orderDetailsDAO.saveOrderDetailsList(orderDTO.getOrderDetailsDTOS());
+                boolean isOrderDetailListSaved = saveOrderDetailsList(orderDTO.getOrderDetailsDTOS());
                 if (isOrderDetailListSaved) {
                     connection.commit();
                     return true;

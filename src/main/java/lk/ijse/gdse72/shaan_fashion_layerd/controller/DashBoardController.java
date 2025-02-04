@@ -44,6 +44,9 @@ public class DashBoardController implements Initializable {
     private JFXButton btnLogOut;
 
     @FXML
+    private JFXButton btnUser;
+
+    @FXML
     private JFXButton btnOrder;
 
     @FXML
@@ -98,6 +101,11 @@ public class DashBoardController implements Initializable {
     void NavigateToSupplierPage(ActionEvent event) {
         navigateTo ("/view/SupplierForm.fxml");
 
+    }
+
+    @FXML
+    void NavigateToUserPage(ActionEvent event) {
+        navigateTo ("/view/UserForm.fxml");
     }
 
     private void navigateTo(String fxmlPath) {

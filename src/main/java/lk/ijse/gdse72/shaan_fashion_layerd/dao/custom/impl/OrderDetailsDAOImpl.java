@@ -11,31 +11,9 @@ import java.util.ArrayList;
 
 public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
-    private final ItemDAOImpl itemDAO = new ItemDAOImpl();
 
     @Override
-    public boolean saveOrderDetailsList(ArrayList<OrderDetailsDTO> orderDetailsDTOS) throws SQLException {
-        // Iterate through each order detail in the list
-        for (OrderDetailsDTO orderDetailsDTO : orderDetailsDTOS) {
-            // @isOrderDetailsSaved: Saves the individual order detail
-            boolean isOrderDetailsSaved = saveOrderDetail(orderDetailsDTO);
-            if (!isOrderDetailsSaved) {
-                // Return false if saving any order detail fails
-                return false;
-            }
-
-            // @isItemUpdated: Updates the item quantity in the stock for the corresponding order detail
-            boolean isItemUpdated = itemDAO.reduceQty(orderDetailsDTO);
-            if (!isItemUpdated) {
-                // Return false if updating the item quantity fails
-                return false;
-            }
-        }
-        // Return true if all order details are saved and item quantities updated successfully
-        return true;
-    }
-
-    private boolean saveOrderDetail(OrderDetailsDTO orderDetailsDTO) throws SQLException {
+    public boolean saveOrderDetail(OrderDetailsDTO orderDetailsDTO) throws SQLException {
         return SQLUtil.execute(
                 "insert into orderdetails values (?,?,?,?)",
                 orderDetailsDTO.getOrderId(),

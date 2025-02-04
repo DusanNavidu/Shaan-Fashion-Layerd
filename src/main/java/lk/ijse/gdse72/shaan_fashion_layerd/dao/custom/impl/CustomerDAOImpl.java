@@ -14,13 +14,13 @@ public class CustomerDAOImpl implements CustomerDAO {
         ResultSet rst = SQLUtil.execute("select customerId from customer order by customerId desc limit 1");
 
         if (rst.next()) {
-            String lastId = rst.getString(1); // Last customer ID
-            String substring = lastId.substring(1); // Extract the numeric part
-            int i = Integer.parseInt(substring); // Convert the numeric part to integer
-            int newIdIndex = i + 1; // Increment the number by 1
-            return String.format("C%03d", newIdIndex); // Return the new customer ID in format Cnnn
+            String lastId = rst.getString(1);
+            String substring = lastId.substring(1);
+            int i = Integer.parseInt(substring);
+            int newIdIndex = i + 1;
+            return String.format("C%03d", newIdIndex);
         }
-        return "C001"; // Return the default customer ID if no data is found
+        return "C001";
     }
     @Override
     public ArrayList<Customer> getAll() throws SQLException {

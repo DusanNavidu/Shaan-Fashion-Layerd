@@ -75,11 +75,11 @@ public class MainController {
     @FXML
     public void autoImage() {
         String[] images = {
-                "/images/pngimg.com - dress_PNG10.png",
-                "/images/7-2-dress-shirt-png-hd.png",
-                "/images/pngwing.com.png" ,
-                "/images/pngimg.com - dress_PNG115.png",
-                "/images/men-s-pants-x70KAW0-600-removebg-preview.png"// Add more images as needed
+                "/assests/images/pngimg.com - dress_PNG10.png",
+                "/assests/images/7-2-dress-shirt-png-hd.png",
+                "/assests/images/pngwing.com.png" ,
+                "/assests/images/pngimg.com - dress_PNG115.png",
+                "/assests/images/men-s-pants-x70KAW0-600-removebg-preview.png"// Add more images as needed
         };
 
         ImageView[] imageViews = {imageView1, imageView2, imageView3};

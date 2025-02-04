@@ -11,7 +11,7 @@ public class BOFactory {
     }
 
     public enum BOTypes{
-        CUSTOMER, CATEGORY,BRAND,SUPPLIER,ITEM,PURCHASE_ORDER
+        CUSTOMER, CATEGORY,BRAND,SUPPLIER,ITEM,PURCHASE_ORDER,USER
     }
 
     public SuperBO getBO(BOTypes types){
@@ -28,6 +28,8 @@ public class BOFactory {
                 return new ItemBOImpl();
             case PURCHASE_ORDER:
                 return new PurchaseOrderBOImpl();
+            case USER:
+                return new UserBOImpl();
             default:
                 return null;
         }
