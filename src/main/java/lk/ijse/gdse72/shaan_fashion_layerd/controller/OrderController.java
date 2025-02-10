@@ -22,6 +22,7 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Orders;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.CartTM;
 
@@ -235,18 +236,18 @@ public class OrderController implements Initializable {
         Date dateOfOrder = Date.valueOf(orderDate.getText());
         String customerId = cmbCustomerId.getValue();
 
-        ArrayList<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+        ArrayList<OrderDetails> orderDetailsDTOS = new ArrayList<>();
 
         for (CartTM cartTM : cartTMS) {
 
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(
+            OrderDetails orderDetails = new OrderDetails(
                     orderId,
                     cartTM.getItemId(),
                     cartTM.getCartQuantity(),
                     cartTM.getUnitPrice()
             );
 
-            orderDetailsDTOS.add(orderDetailsDTO);
+            orderDetailsDTOS.add(orderDetails);
         }
 
         OrderDTO orderDTO = new OrderDTO(

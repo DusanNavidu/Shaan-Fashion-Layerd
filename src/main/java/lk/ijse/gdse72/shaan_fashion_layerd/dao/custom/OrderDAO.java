@@ -8,7 +8,5 @@ import java.sql.SQLException;
 
 public interface OrderDAO extends CrudDAO<Orders> {
 
-    boolean save(OrderDTO orderDTO) throws SQLException;
-
     boolean exist(String orderId) throws SQLException;
 }

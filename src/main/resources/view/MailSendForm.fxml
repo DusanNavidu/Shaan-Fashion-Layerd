@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.shaan_fashion_layerd.controller.MailSendController">
+   <children>
+      <Label layoutX="251.0" layoutY="14.0" text="E-MAIL SEND" textFill="#cf1919" underline="true" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font name="Bodoni MT Bold" size="48.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtSubject" layoutX="35.0" layoutY="113.0" prefHeight="25.0" prefWidth="500.0" promptText="subject" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="150.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextArea fx:id="txtBody" layoutX="26.0" layoutY="200.0" prefHeight="200.0" prefWidth="500.0" promptText="body" style="-fx-border-color: #7367F0;" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextArea>
+      <JFXButton buttonType="RAISED" layoutX="580.0" layoutY="300.0" onAction="#sendUsingGmailOnAction" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #7367F0;" text="Send Using Gmail" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="580.0" layoutY="241.0" onAction="#sendUsingSendgridOnAction" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #7367F0;" text="Send Using Sendgrid" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

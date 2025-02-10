@@ -2,8 +2,8 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl;
 
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.SQLUtil;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.ItemDAO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -146,11 +146,11 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public boolean reduceQty(OrderDetailsDTO orderDetailsDTO) throws SQLException {
+    public boolean reduceQty(OrderDetails entity) throws SQLException {
         return SQLUtil.execute(
                 "update item set itemQuantityOnHand = itemQuantityOnHand - ? where itemId = ?",
-                orderDetailsDTO.getQuantity(),   // QYT to reduce
-                orderDetailsDTO.getItemId()      // Item ID
+                entity.getQuantity(),   // QYT to reduce
+                entity.getItemId()      // Item ID
         );
     }
 }

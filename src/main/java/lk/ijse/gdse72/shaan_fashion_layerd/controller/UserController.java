@@ -1,28 +1,42 @@
 package lk.ijse.gdse72.shaan_fashion_layerd.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.BOFactory;
 import lk.ijse.gdse72.shaan_fashion_layerd.bo.custom.UserBO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.UserDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.UserTM;
+import lombok.Setter;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class UserController implements Initializable {
 
     @FXML
     private JFXButton btnDelete;
+
+    @FXML
+    private JFXButton btnOTP;
 
     @FXML
     private JFXButton btnEMailSendToUser;
@@ -72,15 +86,21 @@ public class UserController implements Initializable {
     @FXML
     private JFXTextField txtFullname;
 
+    @FXML
+    private JFXPasswordField pwdCinfirmPW;
 
     @FXML
-    private JFXTextField txtEnterPassword;
+    private JFXPasswordField pwdEnterPW;
 
     @FXML
-    private JFXTextField txtPassword;
+    private JFXPasswordField pwdUsername;
 
-    @FXML
-    private JFXTextField txtUsername;
+    @Setter
+    private String Email;
+
+    @Setter
+    private UserController userController;
+
 
     UserBO userBO = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
 
@@ -88,9 +108,18 @@ public class UserController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colUserFullName.setCellValueFactory(new PropertyValueFactory<>("userFullName"));
-        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+
+        colUsername.setCellValueFactory(cellData -> {
+            String maskedUsername = "*".repeat(cellData.getValue().getUsername().length());
+            return new SimpleStringProperty(maskedUsername);
+        });
+
         colEmail.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+
+        colPassword.setCellValueFactory(cellData -> {
+            String maskedPassword = "*".repeat(cellData.getValue().getPassword().length());
+            return new SimpleStringProperty(maskedPassword);
+        });
 
         try {
             refreshPage();
@@ -106,12 +135,14 @@ public class UserController implements Initializable {
         lblUserId.setText(newUserId);
 
         txtFullname.setText("");
-        txtUsername.setText("");
+        pwdUsername.setText("");
         txtEmail.setText("");
-        txtPassword.setText("");
+        pwdEnterPW.setText("");
+        pwdCinfirmPW.setText("");
 
         btnSave.setDisable(false);
 
+        btnOTP.setDisable(true);
         btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
         btnGenerateReport.setDisable(true);
@@ -160,7 +191,35 @@ public class UserController implements Initializable {
 
     @FXML
     void btnEMailSendToUserOnAction(ActionEvent event) {
+        UserTM selectedItem = tblUser.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a user to send an email").show();
+            return;
+        }
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MailSendForm.fxml"));
+            Parent load = loader.load();
+
+            MailSendController sendMailController = loader.getController();
+
+            String email = selectedItem.getUserEmail();
+            sendMailController.setEmail(email);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(load));
+            stage.setTitle("Send email");
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Window underWindow = btnUpdate.getScene().getWindow();
+            stage.initOwner(underWindow);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Fail to load ui..!");
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -177,9 +236,10 @@ public class UserController implements Initializable {
     void btnSaveOnAction(ActionEvent event) throws Exception {
         String userId = lblUserId.getText();
         String userFullName = txtFullname.getText();
-        String username = txtUsername.getText();
+        String username = pwdUsername.getText();
         String userEmail = txtEmail.getText();
-        String password = txtPassword.getText();
+        String enterPw = pwdEnterPW.getText();
+        String password = pwdCinfirmPW.getText();
 
         String namePattern = "^[A-Za-z ]+$";
         String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
@@ -189,27 +249,38 @@ public class UserController implements Initializable {
         boolean isValidName = userFullName.matches(namePattern);
         boolean isValidEmail = userEmail.matches(emailPattern);
         boolean isValidUsername = username.matches(usernamePattern);
-        boolean isValidPassword = password.matches(passwordPattern);
+        boolean isValidPassword2 = enterPw.matches(passwordPattern);
+        boolean isValidPassword1 = password.matches(passwordPattern);
 
         txtFullname.setStyle(txtFullname.getStyle()+"-fx-border-color: #7367F0;");
-        txtUsername.setStyle(txtUsername.getStyle()+"-fx-border-color: #7367F0;");
+        pwdUsername.setStyle(pwdUsername.getStyle()+"-fx-border-color: #7367F0;");
         txtEmail.setStyle(txtEmail.getStyle()+"-fx-border-color: #7367F0;");
-        txtPassword.setStyle(txtPassword.getStyle()+"-fx-border-color: #7367F0;");
+        pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: #7367F0;");
+        pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: #7367F0;");
+
 
         if (!isValidName){
             txtFullname.setStyle(txtFullname.getStyle()+"-fx-border-color: red;");
         }
         if (!isValidUsername){
-            txtUsername.setStyle(txtUsername.getStyle()+"-fx-border-color: red;");
+            pwdUsername.setStyle(pwdUsername.getStyle()+"-fx-border-color: red;");
         }
         if (!isValidEmail){
             txtEmail.setStyle(txtEmail.getStyle()+"-fx-border-color: red;");
         }
-        if (!isValidPassword){
-            txtPassword.setStyle(txtPassword.getStyle()+"-fx-border-color: red;");
+        if (!isValidPassword1){
+            pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: red;");
+        }
+        if (!isValidPassword2){
+            pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: red;");
         }
 
-        if (isValidName && isValidUsername && isValidEmail && isValidPassword) {
+        if (!password.equals(enterPw)){
+            pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: red;");
+            pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: red;");
+        }
+
+        if (isValidName && isValidUsername && isValidEmail && isValidPassword2 && isValidPassword1 && password.equals(enterPw)) {
             boolean isSaved = userBO.saveUser(
                     new UserDTO(
                             userId,
@@ -227,13 +298,48 @@ public class UserController implements Initializable {
         }
     }
 
+
+    @FXML
+    void btnOTPOnAction(ActionEvent event) {
+        UserTM selectedItem = tblUser.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a user to send an email").show();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MailSendForm.fxml"));
+            Parent load = loader.load();
+
+            OTPController otpController = loader.getController();
+
+            String email = selectedItem.getUserEmail();
+            otpController.setEmail(email);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(load));
+            stage.setTitle("Send email");
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Window underWindow = btnUpdate.getScene().getWindow();
+            stage.initOwner(underWindow);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Fail to load ui..!");
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     void btnUpdateOnAction(ActionEvent event) throws Exception {
         String userId = lblUserId.getText();
         String userFullName = txtFullname.getText();
-        String username = txtUsername.getText();
+        String username = pwdUsername.getText();
         String userEmail = txtEmail.getText();
-        String password = txtPassword.getText();
+        String enterPw = pwdEnterPW.getText();
+        String password = pwdCinfirmPW.getText();
 
         String namePattern = "^[A-Za-z ]+$";
         String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
@@ -243,27 +349,38 @@ public class UserController implements Initializable {
         boolean isValidName = userFullName.matches(namePattern);
         boolean isValidEmail = userEmail.matches(emailPattern);
         boolean isValidUsername = username.matches(usernamePattern);
-        boolean isValidPassword = password.matches(passwordPattern);
+        boolean isValidPassword2 = enterPw.matches(passwordPattern);
+        boolean isValidPassword1 = password.matches(passwordPattern);
 
         txtFullname.setStyle(txtFullname.getStyle()+"-fx-border-color: #7367F0;");
-        txtUsername.setStyle(txtUsername.getStyle()+"-fx-border-color: #7367F0;");
+        pwdUsername.setStyle(pwdUsername.getStyle()+"-fx-border-color: #7367F0;");
         txtEmail.setStyle(txtEmail.getStyle()+"-fx-border-color: #7367F0;");
-        txtPassword.setStyle(txtPassword.getStyle()+"-fx-border-color: #7367F0;");
+        pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: #7367F0;");
+        pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: #7367F0;");
+
 
         if (!isValidName){
             txtFullname.setStyle(txtFullname.getStyle()+"-fx-border-color: red;");
         }
         if (!isValidUsername){
-            txtUsername.setStyle(txtUsername.getStyle()+"-fx-border-color: red;");
+            pwdUsername.setStyle(pwdUsername.getStyle()+"-fx-border-color: red;");
         }
         if (!isValidEmail){
             txtEmail.setStyle(txtEmail.getStyle()+"-fx-border-color: red;");
         }
-        if (!isValidPassword){
-            txtPassword.setStyle(txtPassword.getStyle()+"-fx-border-color: red;");
+        if (!isValidPassword1){
+            pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: red;");
+        }
+        if (!isValidPassword2){
+            pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: red;");
         }
 
-        if (isValidName && isValidUsername && isValidEmail && isValidPassword) {
+        if (!password.equals(enterPw)){
+            pwdEnterPW.setStyle(pwdEnterPW.getStyle()+"-fx-border-color: red;");
+            pwdCinfirmPW.setStyle(pwdCinfirmPW.getStyle()+"-fx-border-color: red;");
+        }
+
+        if (isValidName && isValidUsername && isValidEmail && isValidPassword2 && isValidPassword1 && password.equals(enterPw)) {
             boolean isUpdated = userBO.updateUser(
                     new UserDTO(
                             userId,
@@ -273,13 +390,14 @@ public class UserController implements Initializable {
                             password
                     ));
             if (isUpdated){
-                new Alert(Alert.AlertType.CONFIRMATION, "User Update Successfully").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "User Updated Successfully").show();
                 refreshPage();
             }else {
-                new Alert(Alert.AlertType.ERROR, "User Update Failed").show();
+                new Alert(Alert.AlertType.ERROR, "User update Failed").show();
             }
         }
     }
+
 
     @FXML
     void onClickTable(MouseEvent event) {
@@ -287,12 +405,14 @@ public class UserController implements Initializable {
         if (selectedItem != null){
             lblUserId.setText(selectedItem.getUserId());
             txtFullname.setText(selectedItem.getUserFullName());
-            txtUsername.setText(selectedItem.getUsername());
+            pwdUsername.setText(selectedItem.getUsername());
             txtEmail.setText(selectedItem.getUserEmail());
-            txtPassword.setText(selectedItem.getPassword());
+            pwdCinfirmPW.setText(selectedItem.getPassword());
+            pwdEnterPW.setText(selectedItem.getPassword());
 
             btnSave.setDisable(true);
 
+            btnOTP.setDisable(false);
             btnDelete.setDisable(false);
             btnUpdate.setDisable(false);
             btnGenerateReport.setDisable(false);

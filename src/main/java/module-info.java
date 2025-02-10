@@ -5,6 +5,7 @@ module lk.ijse.gdse72.shaan_fashion_layerd {
     requires com.jfoenix;
     requires java.sql;
     requires static lombok;
+    requires java.mail;
 
     opens lk.ijse.gdse72.shaan_fashion_layerd.controller to javafx.fxml;
     opens lk.ijse.gdse72.shaan_fashion_layerd to javafx.fxml;

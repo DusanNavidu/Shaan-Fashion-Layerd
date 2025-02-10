@@ -5,6 +5,7 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public interface PurchaseOrderBO extends SuperBO {
 
     Item findByItemId(String itemId) throws SQLException;
 
-    boolean saveOrderDetailsList(ArrayList<OrderDetailsDTO> orderDetailsDTOS) throws SQLException;
+    boolean saveOrderDetailsList(ArrayList<OrderDetails> orderDetailsS) throws SQLException;
 
     boolean saveOrder(OrderDTO orderDTO) throws SQLException;
 }

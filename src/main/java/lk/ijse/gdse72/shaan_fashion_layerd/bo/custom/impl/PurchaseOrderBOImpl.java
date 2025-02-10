@@ -8,9 +8,10 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.OrderDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.OrderDetailsDAO;
 import lk.ijse.gdse72.shaan_fashion_layerd.db.DBConnection;
 import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDetailsDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Customer;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Item;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.Orders;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -49,14 +50,14 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
     }
 
     @Override
-    public boolean saveOrderDetailsList(ArrayList<OrderDetailsDTO> orderDetailsDTOS) throws SQLException {
-        for (OrderDetailsDTO orderDetailsDTO : orderDetailsDTOS) {
-            boolean isOrderDetailsSaved = orderDetailsDAO.saveOrderDetail(orderDetailsDTO);
+    public boolean saveOrderDetailsList(ArrayList<OrderDetails> orderDetailsS) throws SQLException {
+        for (OrderDetails orderDetails : orderDetailsS) {
+            boolean isOrderDetailsSaved = orderDetailsDAO.save(orderDetails);
             if (!isOrderDetailsSaved) {
                 return false;
             }
 
-            boolean isItemUpdated = itemDAO.reduceQty(orderDetailsDTO);
+            boolean isItemUpdated = itemDAO.reduceQty(orderDetails);
             if (!isItemUpdated) {
                 return false;
             }
@@ -70,7 +71,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
         try {
             connection.setAutoCommit(false);
 
-            boolean isOrderSaved = orderDAO.save(orderDTO);
+            boolean isOrderSaved = orderDAO.save(new Orders(orderDTO.getOrderId(),orderDTO.getCustomerId(),orderDTO.getOrderDate()));
             if (isOrderSaved) {
                 boolean isOrderDetailListSaved = saveOrderDetailsList(orderDTO.getOrderDetailsDTOS());
                 if (isOrderDetailListSaved) {

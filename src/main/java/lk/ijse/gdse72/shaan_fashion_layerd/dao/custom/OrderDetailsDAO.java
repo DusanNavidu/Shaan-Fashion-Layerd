@@ -9,6 +9,4 @@ import java.util.ArrayList;
 
 public interface OrderDetailsDAO extends CrudDAO<OrderDetails> {
 
-
-    boolean saveOrderDetail(OrderDetailsDTO orderDetailsDTO) throws SQLException;
 }

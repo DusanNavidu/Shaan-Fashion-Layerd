@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -64,6 +65,11 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </JFXButton>
+            <JFXButton fx:id="btnOTP" buttonType="RAISED" layoutX="670.0" layoutY="10.0" onAction="#btnOTPOnAction" prefHeight="35.0" prefWidth="300.0" style="-fx-background-color: #b3b3ff; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="OTP send for user update &amp; delete">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
          </children>
          <padding>
             <Insets left="280.0" right="300.0" />
@@ -117,11 +123,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtUsername" prefHeight="25.0" prefWidth="1200.0" promptText="username" unFocusColor="#a4a1a1">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </JFXTextField>
+                  <JFXPasswordField fx:id="pwdUsername" prefHeight="35.0" prefWidth="1200.0" promptText="******" />
                </children>
                <padding>
                   <Insets top="5.0" />
@@ -151,11 +153,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtEnterPassword" prefHeight="39.0" prefWidth="1200.0" promptText="4 - 8 digits password">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </JFXTextField>
+                  <JFXPasswordField fx:id="pwdEnterPW" prefHeight="35.0" prefWidth="1200.0" promptText="****" />
                </children>
                <padding>
                   <Insets top="5.0" />
@@ -168,11 +166,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txtPassword" prefHeight="39.0" prefWidth="1200.0" promptText="confirm your password">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </JFXTextField>
+                  <JFXPasswordField fx:id="pwdCinfirmPW" prefHeight="35.0" prefWidth="1200.0" promptText="****" />
                </children>
                <padding>
                   <Insets top="5.0" />

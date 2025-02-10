@@ -2,7 +2,6 @@ package lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.impl;
 
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.SQLUtil;
 import lk.ijse.gdse72.shaan_fashion_layerd.dao.custom.OrderDAO;
-import lk.ijse.gdse72.shaan_fashion_layerd.dto.OrderDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.entity.Orders;
 
 import java.sql.ResultSet;
@@ -27,12 +26,12 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean save(OrderDTO orderDTO) throws SQLException {
+    public boolean save(Orders entity) throws SQLException {
         return SQLUtil.execute(
                 "insert into orders values (?,?,?)",
-                orderDTO.getOrderId(),
-                orderDTO.getCustomerId(),
-                orderDTO.getOrderDate()
+                entity.getOrderId(),
+                entity.getCustomerId(),
+                entity.getOrderDate()
         );
     }
 
@@ -44,11 +43,6 @@ public class OrderDAOImpl implements OrderDAO {
     }
     @Override
     public ArrayList<Orders> getAll() throws SQLException {
-        throw new UnsupportedOperationException("This Feature is not implemented yet");
-    }
-
-    @Override
-    public boolean save(Orders entity) throws SQLException {
         throw new UnsupportedOperationException("This Feature is not implemented yet");
     }
 

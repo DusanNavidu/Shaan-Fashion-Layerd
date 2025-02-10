@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.shaan_fashion_layerd.controller.OTPController">
+   <children>
+      <Pane layoutY="34.0" prefHeight="350.0" prefWidth="550.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <Label layoutX="240.0" layoutY="25.0" text="OTP">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <HBox layoutX="126.0" layoutY="96.0" prefHeight="29.0" prefWidth="301.0" spacing="5.0">
+               <children>
+                  <Label text="OTP send " />
+                  <Label fx:id="lblEmail" prefHeight="21.0" prefWidth="153.0" />
+                  <JFXButton fx:id="btnSend" buttonType="RAISED" onAction="#btnSendOnAction" prefHeight="26.0" prefWidth="84.0" style="-fx-background-color: #22d752;" text="Send" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Narrow Bold" size="14.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <TextField fx:id="txtOTP" alignment="CENTER" layoutX="177.0" layoutY="156.0" prefHeight="50.0" prefWidth="200.0">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </TextField>
+            <JFXButton fx:id="btnOK" buttonType="RAISED" layoutX="226.0" layoutY="297.0" onAction="#btnOKOnAction" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #11a4d0;" text="OK" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

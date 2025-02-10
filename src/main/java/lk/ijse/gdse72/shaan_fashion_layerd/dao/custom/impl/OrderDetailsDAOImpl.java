@@ -13,13 +13,13 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
 
     @Override
-    public boolean saveOrderDetail(OrderDetailsDTO orderDetailsDTO) throws SQLException {
+    public boolean save(OrderDetails entity) throws SQLException {
         return SQLUtil.execute(
                 "insert into orderdetails values (?,?,?,?)",
-                orderDetailsDTO.getOrderId(),
-                orderDetailsDTO.getItemId(),
-                orderDetailsDTO.getQuantity(),
-                orderDetailsDTO.getPrice()
+                entity.getOrderId(),
+                entity.getItemId(),
+                entity.getQuantity(),
+                entity.getPrice()
         );
     }
 
@@ -33,10 +33,6 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
         throw new UnsupportedOperationException("This feature is not implemented yet");
     }
 
-    @Override
-    public boolean save(OrderDetails entity) throws SQLException {
-        throw new UnsupportedOperationException("This feature is not implemented yet");
-    }
 
     @Override
     public boolean update(OrderDetails entity) throws SQLException {

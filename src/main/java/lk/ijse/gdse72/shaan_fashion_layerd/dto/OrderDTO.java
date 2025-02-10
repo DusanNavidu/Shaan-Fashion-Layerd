@@ -1,5 +1,6 @@
 package lk.ijse.gdse72.shaan_fashion_layerd.dto;
 
+import lk.ijse.gdse72.shaan_fashion_layerd.entity.OrderDetails;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,5 +19,5 @@ public class OrderDTO implements Serializable {
     private String customerId;
     private Date orderDate;
 
-    private ArrayList<OrderDetailsDTO> orderDetailsDTOS;
+    private ArrayList<OrderDetails> orderDetailsDTOS;
 }
