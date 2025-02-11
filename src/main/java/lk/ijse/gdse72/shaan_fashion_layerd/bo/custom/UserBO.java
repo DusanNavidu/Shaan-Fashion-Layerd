@@ -15,4 +15,10 @@ public interface UserBO extends SuperBO {
     boolean updateUser(UserDTO dto) throws Exception;
 
     boolean deleteUser(String userId) throws Exception;
+
+    boolean isValidUser(String username, String password) throws Exception;
+
+    boolean isUpdatePassword(String username, String password) throws Exception;
+
+    boolean isValidUserFullName(String fullName) throws Exception;
 }

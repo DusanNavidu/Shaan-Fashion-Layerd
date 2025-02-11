@@ -71,4 +71,21 @@ public class UserDAOImpl implements UserDAO {
     public boolean delete(String userId) throws SQLException {
         return SQLUtil.execute("delete from user where userId=?", userId);
     }
+
+    @Override
+    public boolean ValidUser(String username, String password) throws SQLException {
+        ResultSet rst = SQLUtil.execute("SELECT * FROM user WHERE username = ? AND password = ?", username, password);
+        return rst.next();
+    }
+
+    @Override
+    public boolean updatePassword(String username, String password) throws SQLException {
+        return SQLUtil.execute("UPDATE user SET password = ? WHERE username = ?", password, username);
+    }
+
+    @Override
+    public boolean ValidUserFullName(String fullName) throws SQLException {
+        ResultSet rst = SQLUtil.execute("SELECT userId FROM user WHERE userId = 'U001' AND userFullName = ?", fullName);
+        return rst.next();
+    }
 }

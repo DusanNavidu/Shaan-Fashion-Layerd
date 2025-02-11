@@ -41,4 +41,19 @@ public class UserBOImpl implements UserBO {
     public boolean deleteUser(String userId) throws Exception {
         return userDAO.delete(userId);
     }
+
+    @Override
+    public boolean isValidUser(String username, String password) throws Exception {
+        return userDAO.ValidUser(username, password);
+    }
+
+    @Override
+    public boolean isUpdatePassword(String username, String password) throws Exception {
+        return userDAO.updatePassword(username, password);
+    }
+
+    @Override
+    public boolean isValidUserFullName(String fullName) throws Exception {
+        return userDAO.ValidUserFullName(fullName);
+    }
 }

@@ -86,6 +86,13 @@
             </Button>
          </children>
       </Pane>
-      <AnchorPane fx:id="dashBoardLoadingTablePage" layoutX="786.0" layoutY="426.0" prefHeight="970.0" prefWidth="1720.0" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="110.0" />
+      <AnchorPane fx:id="dashBoardLoadingTablePage" layoutX="786.0" layoutY="426.0" prefHeight="970.0" prefWidth="1720.0" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="110.0">
+         <children>
+            <ImageView fitHeight="970.0" fitWidth="970.0" layoutX="335.0" layoutY="17.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../assests/images/image%20shaan%20fashion%20logo.jpg" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
    </children>
 </AnchorPane>

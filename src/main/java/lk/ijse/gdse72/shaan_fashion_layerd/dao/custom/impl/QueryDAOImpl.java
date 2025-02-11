@@ -30,5 +30,4 @@ public class QueryDAOImpl implements QueryDAO {
         }
         return allRecords;
     }
-
 }

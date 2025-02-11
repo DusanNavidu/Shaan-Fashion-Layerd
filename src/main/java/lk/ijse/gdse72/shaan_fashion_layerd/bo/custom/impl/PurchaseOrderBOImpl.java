@@ -71,7 +71,12 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
         try {
             connection.setAutoCommit(false);
 
-            boolean isOrderSaved = orderDAO.save(new Orders(orderDTO.getOrderId(),orderDTO.getCustomerId(),orderDTO.getOrderDate()));
+            boolean isOrderSaved = orderDAO.save(new Orders(
+                    orderDTO.getOrderId(),
+                    orderDTO.getCustomerId(),
+                    orderDTO.getOrderDate()
+            ));
+
             if (isOrderSaved) {
                 boolean isOrderDetailListSaved = saveOrderDetailsList(orderDTO.getOrderDetailsDTOS());
                 if (isOrderDetailListSaved) {

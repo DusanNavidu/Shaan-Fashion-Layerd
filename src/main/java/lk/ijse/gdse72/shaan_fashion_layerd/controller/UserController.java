@@ -23,9 +23,6 @@ import lk.ijse.gdse72.shaan_fashion_layerd.dto.UserDTO;
 import lk.ijse.gdse72.shaan_fashion_layerd.view.tdm.UserTM;
 import lombok.Setter;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -142,7 +139,6 @@ public class UserController implements Initializable {
 
         btnSave.setDisable(false);
 
-        btnOTP.setDisable(true);
         btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
         btnGenerateReport.setDisable(true);
@@ -298,40 +294,6 @@ public class UserController implements Initializable {
         }
     }
 
-
-    @FXML
-    void btnOTPOnAction(ActionEvent event) {
-        UserTM selectedItem = tblUser.getSelectionModel().getSelectedItem();
-        if (selectedItem == null) {
-            new Alert(Alert.AlertType.WARNING, "Please select a user to send an email").show();
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MailSendForm.fxml"));
-            Parent load = loader.load();
-
-            OTPController otpController = loader.getController();
-
-            String email = selectedItem.getUserEmail();
-            otpController.setEmail(email);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(load));
-            stage.setTitle("Send email");
-
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            Window underWindow = btnUpdate.getScene().getWindow();
-            stage.initOwner(underWindow);
-
-            stage.showAndWait();
-        } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Fail to load ui..!");
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) throws Exception {
         String userId = lblUserId.getText();
@@ -412,7 +374,6 @@ public class UserController implements Initializable {
 
             btnSave.setDisable(true);
 
-            btnOTP.setDisable(false);
             btnDelete.setDisable(false);
             btnUpdate.setDisable(false);
             btnGenerateReport.setDisable(false);

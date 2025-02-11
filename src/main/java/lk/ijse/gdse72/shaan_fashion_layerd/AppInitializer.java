@@ -12,7 +12,7 @@ import java.io.IOException;
 public class AppInitializer extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AppInitializer.class.getResource("/view/DashboardForm.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(AppInitializer.class.getResource("/view/LoginForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Shaan Fashion");
         stage.getIcons().add(

@@ -198,12 +198,10 @@ public class CustomerController implements Initializable {
         String customerAddress = txtCustomerAddress.getText();
         String customerEmail = txtCustomerEmail.getText();
 
-        // Define regex patterns for validation
         String namePattern = "^[A-Za-z ]+$";
         String addressPattern = "^^[a-zA-Z0-9\\s,.'-]{3,}$";
         String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
-        //Validate each field using regex patterns
         boolean isValidName = customerName.matches(namePattern);
         boolean isValidAddress = customerAddress.matches(addressPattern);
         boolean isValidEmail = customerEmail.matches(emailPattern);
@@ -212,7 +210,6 @@ public class CustomerController implements Initializable {
         txtCustomerAddress.setStyle(txtCustomerAddress.getStyle() + ";-fx-border-color: #7367F0;");
         txtCustomerEmail.setStyle(txtCustomerEmail.getStyle() + ";-fx-border-color: #7367F0;");
 
-        // Highlight invalid fields in red
 
         if (!isValidName) {
             txtCustomerName.setStyle(txtCustomerName.getStyle() + ";-fx-border-color: red;");
@@ -254,12 +251,10 @@ public class CustomerController implements Initializable {
         String customerAddress = txtCustomerAddress.getText();
         String customerEmail = txtCustomerEmail.getText();
 
-        // Define regex patterns for validation
         String namePattern = "^[A-Za-z ]+$";
         String addressPattern = "^^[a-zA-Z0-9\\s,.'-]{3,}$";
         String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
-        //Validate each field using regex patterns
         boolean isValidName = customerName.matches(namePattern);
         boolean isValidAddress = customerAddress.matches(addressPattern);
         boolean isValidEmail = customerEmail.matches(emailPattern);
@@ -268,7 +263,6 @@ public class CustomerController implements Initializable {
         txtCustomerAddress.setStyle(txtCustomerAddress.getStyle() + ";-fx-border-color: #7367F0;");
         txtCustomerEmail.setStyle(txtCustomerEmail.getStyle() + ";-fx-border-color: #7367F0;");
 
-        // Highlight invalid fields in red
 
         if (!isValidName) {
             txtCustomerName.setStyle(txtCustomerName.getStyle() + ";-fx-border-color: red;");
@@ -314,7 +308,7 @@ public class CustomerController implements Initializable {
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer deleted successfully!").show();
-                refreshPage();  // Refresh the entire page to clear fields
+                refreshPage();
             } else {
                 new Alert(Alert.AlertType.ERROR, "Customer delete failed!").show();
             }
